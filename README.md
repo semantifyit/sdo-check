@@ -56,4 +56,4 @@ Since that requires its own backend, which we wanted to omit for this showcase p
 
 ## License 
 
-CC-BY-SA-3.0
+[CC-BY-SA-3.0](https://creativecommons.org/licenses/by-sa/3.0/)
