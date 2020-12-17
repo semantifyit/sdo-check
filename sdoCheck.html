@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>SDO-Check</title>
+    <meta name="description" content="SDO Check">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width">
+    <!-- Material Design fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Bootstrap Material Design -->
+    <link rel="stylesheet" type="text/css" href="node_modules/bootstrap-material-design/dist/css/ripples.css">
+    <link rel="stylesheet" type="text/css"
+          href="node_modules/bootstrap-material-design/dist/css/bootstrap-material-design.css">
+    <!-- Codemirror -->
+    <link rel="stylesheet" href="node_modules/codemirror/addon/lint/lint.css">
+    <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
+    <!-- js tree -->
+    <link rel="stylesheet" href="node_modules/jstree/dist/themes/default/style.min.css"/>
+    <!-- Style of this project -->
+    <link rel="stylesheet" href="frontend/styles/sdoCheck.css"/>
+    <link rel="stylesheet" href="frontend/styles/semantify.css"/>
+</head>
+<body class="">
+
+<!-- Header Start -->
+<div class="navbar os-color-bg " style="margin-bottom: 0;">
+    <h1 class="text-white" style="margin: auto;">SDO-Check</h1>
+</div>
+
+<!-- Content Start -->
+<div id="overall-content">
+
+    <!-- URL address Row -->
+    <div id="url-row">
+        <div>
+            <div>
+                <label for="url-row-input" class="control-label">
+                    <i id="url-row-icon" class="material-icons">public</i>
+                    <img id="url-row-loading" src="frontend/images/loading.gif" alt="loading animation"
+                         style="display: none;">
+                </label>
+            </div>
+            <div>
+                <input id="url-row-input" class="form-control input-myBackground" type="url" placeholder="input url"
+                       oninput="checkUrlRowInput()">
+            </div>
+            <div>
+                <a id="btn-start-verification-url" onclick="startVerificationOfURL()"
+                   class="btn btn-raised button-sti-red-action" title="Start webpage verification" disabled="">Start
+                    webpage verification</a>
+            </div>
+        </div>
+    </div>
+    <!-- Editor Row -->
+    <div id="editor-row">
+        <!-- html src code -->
+        <div>
+            <div id="btn-start-verification-src" class="detail-button">
+                <a onclick="startExtractionOfAnnotations()" class="btn button-sti-red-action btn-fab"
+                   title="Start snippet verification" disabled="true">
+                    <i class="material-icons">play_arrow</i>
+                </a>
+            </div>
+            <!-- error board -->
+            <div id="error-board" class="left">
+                <div>
+                    <div id="error-board__close"><a onclick="closeErrorBoard()"
+                                                    class="btn button-sti-red-action btn-fab"
+                                                    title="close error details">
+                        <i class="material-icons">close</i>
+                    </a></div>
+                    <div id="error-board__name">clicked element name</div>
+                    <div id="error-board__path">path</div>
+                    <div id="error-board__container" class="containerStyle">error container</div>
+                </div>
+            </div>
+            <!--background icon-->
+            <div class="bg-icon">
+                <span class="material-icons">code</span>
+            </div>
+            <div id="html-src-loading" class="blender" hidden>
+                <div>
+                    <img src="frontend/images/loading.gif">
+                </div>
+            </div>
+            <textarea id="html-input" placeholder="paste HTML/JSON-LD snippet here or enter ULR above"
+                      hidden></textarea>
+        </div>
+        <!-- Resizer -->
+        <div id="resizer"></div>
+        <!-- semantic visualisation -->
+        <div>
+            <div id="btn-return-to-overview" class="detail-button hideBtn">
+                <a onclick="returnToAnnotationOverview()" class="btn button-sti-red-action btn-fab"
+                   title="View all annotations">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </div>
+            <div id="btn-raw-annotation" class="detail-button hideBtn">
+                <a onclick="viewRawAnnotation()" class="btn button-sti-red-action btn-fab"
+                   title="View raw annotation (JSON-LD)">
+                    <i class="material-icons">code</i>
+                </a>
+            </div>
+            <!--background icon-->
+            <div class="bg-icon">
+                <span class="material-icons">account_tree</span>
+            </div>
+            <div id="sem-vis-loading" class="blender" hidden>
+                <div>
+                    <img src="frontend/images/loading.gif" alt="loading animation">
+                </div>
+            </div>
+            <div id="sem-vis-container">
+                <div id="sem-vis-container-vp">
+                    <div id="annotation-overview">
+
+                    </div>
+                    <div id="annotation-details">
+                        <div class="annotation-detail-header bold">
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div id="js-tree-table-wrapper">
+                            <div id="js-tree-table"></div>
+                        </div>
+                        <div id="annotation-invalid-jsonld">
+                            <textarea id="codemirror-invalid-jsonld">
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Footer -->
+    <div id="footer">
+        <div>
+            <span>
+            made with  </span>
+            <span>
+            <i class="material-icons">favorite</i>
+            </span>
+            <span>
+            by
+            <a href="https://semantify.it/" target="_blank">semantify.it</a>
+                   </span>
+        </div>
+    </div>
+
+    <!-- template container -->
+    <div id="template-container" hidden>
+        <div id='template-error-entry'>
+            <div class="alert my-alert my-alert-{{errorSeverityClass}}">
+                <div>
+        <span title="{{errorHoverTitle}}"><i class="material-icons val-icon">{{errorSeverityIcon}}</i>
+            <span class="title">{{errorTitle}}</span>
+    </span>
+                </div>
+                <div class="my-alert__error-description">
+                    {{errorDescription}}
+                </div>
+                <div>
+                    <a onclick="toggleExplain(this)" class="show-more-link">> show more</a>
+                </div>
+                <div class="my-alert__error-explain hidden">
+                    {{errorExplain}}
+                </div>
+            </div>
+        </div>
+        <div id='template-annotation-entry'>
+            <div data-entryNr="{{entryNr}}" class="annotation-entry bold" title="{{title}}"
+                 onclick="viewAnnotationDetails({{entryNr}})">
+                <div>{{type}}</div>
+                <div>{{errors}}</div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Container -->
+    <div id="modal-container">
+        <!--Modal: Inspect Modal -->
+        <div id='InspectModal'>
+            <div id="inspect-modal" class="modal fade" tabindex="-1" style="z-index: 1510 !important;">
+                <div class="modal-dialog modal-inspect">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="inspect-modal-title"></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="pre-inspect-modal-content" class="pre-input-container-fullview"></div>
+                        </div>
+                        <div class="modal-footer text-center">
+                            <a id="copyBtnInspect" class="btn btn-default modal-footer-btn"
+                               data-clipboard-action="copy" data-clipboard-target="#pre-inspect-modal-content"
+                               type="button" title="copy content in your clipboard"><i
+                                    class="material-icons button-icon">content_copy</i>Copy Content</a>
+                            <a href="javascript:void(0)" class="btn btn-default modal-footer-btn"
+                               data-dismiss="modal">OK</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Modal: Inspect invalid jsonld Modal -->
+        <div id="invalid-jsonld-modal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-inspect">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="invalid-jsonld-modal-title"></h4>
+                    </div>
+                    <div class="modal-body row">
+                        <div id="invalid-jsonld-modal-error-msg"></div>
+                        <div id="invalid-jsonld-modal-content" class="pre-input-container-fullview"></div>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <a id="copyBtnInvalidJSON" class="btn btn-default modal-footer-btn"
+                           data-clipboard-action="copy" data-clipboard-target="#invalid-jsonld-modal-content"
+                           type="button" title="copy invalid JSON-LD in your clipboard"><i
+                                class="material-icons button-icon">content_copy</i>Copy Content</a>
+                        <a href="javascript:void(0)" class="btn btn-default modal-footer-btn"
+                           data-dismiss="modal">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery Script -->
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap Script -->
+<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Bootstrap Material Design Script -->
+<script src="node_modules/bootstrap-material-design/dist/js/material.min.js"></script>
+<script src="node_modules/bootstrap-material-design/dist/js/ripples.min.js"></script>
+<!-- clipboard -->
+<script src="node_modules/clipboard/dist/clipboard.min.js"></script>
+<!--jsTree.js -->
+<script src="node_modules/jstree/dist/jstree.js"></script>
+<!-- Codemirror -->
+<script src="node_modules/codemirror/lib/codemirror.js"></script>
+<script src="node_modules/codemirror/mode/xml/xml.js"></script>
+<script src="node_modules/codemirror/mode/css/css.js"></script>
+<script src="node_modules/codemirror/mode/javascript/javascript.js"></script>
+<script src="node_modules/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+<script src="node_modules/codemirror/addon/display/placeholder.js"></script>
+<script src="node_modules/codemirror/addon/lint/lint.js"></script>
+<script src="node_modules/codemirror/addon/lint/json-lint.js"></script>
+<script src="node_modules/codemirror/addon/selection/active-line.js"></script>
+<script src="node_modules/jsonlint-mod/lib/jsonlint.js"></script>
+<!--sdo adapter-->
+<script src="node_modules/schema-org-adapter/dist/schema-org-adapter.min.js"></script>
+<!-- Application -->
+<script src="extraction/extractorBundle.js"></script>
+<script src="verification/generalVerificationBundle.js"></script>
+<script src="frontend/scripts/utilities.js"></script>
+<script src="frontend/scripts/helper.js"></script>
+<script src="frontend/scripts/visualization.js"></script>
+<script src="frontend/scripts/errorExplain.js"></script>
+<script src="frontend/scripts/sdoCheck.js"></script>
+</body>
+</html>

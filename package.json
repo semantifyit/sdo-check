@@ -1,0 +1,48 @@
+{
+  "name": "sdo-check",
+  "version": "1.0.0",
+  "description": "This is an open-source version of the SDO-Check tool of semantify.it (http://sdocheck.semantify.it/)",
+  "main": "index.js",
+  "scripts": {
+    "start": "open-cli sdoCheck.html",
+    "buildExtractor": "browserify extraction/src/Extractor.js -s Extractor -g [uglifyify] | derequire -cm --toplevel > extraction/extractorBundle.js",
+    "buildGeneralVerificator": "browserify verification/src/GeneralVerification.js -s GeneralVerificator -g [uglifyify] | derequire -cm --toplevel > verification/generalVerificationBundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/semantifyit/sdo-check.git"
+  },
+  "keywords": [
+    "sdo-check",
+    "schema.org",
+    "validator",
+    "verifier",
+    "validation",
+    "verification"
+  ],
+  "author": "Omar J. Holzknecht",
+  "license": "CC-BY-SA-3.0",
+  "bugs": {
+    "url": "https://github.com/semantifyit/sdo-check/issues"
+  },
+  "homepage": "https://github.com/semantifyit/sdo-check#readme",
+  "dependencies": {
+    "bootstrap": "^4.5.3",
+    "bootstrap-material-design": "^0.5.10",
+    "clipboard": "^2.0.6",
+    "codemirror": "^5.58.3",
+    "jquery": "^3.5.1",
+    "jsonlint-mod": "^1.7.6",
+    "jstree": "^3.3.10",
+    "schema-org-adapter": "^3.3.0"
+  },
+  "devDependencies": {
+    "browserify": "^17.0.0",
+    "browserify-derequire": "^1.0.1",
+    "jsonld": "^3.2.0",
+    "moment": "^2.29.1",
+    "open-cli": "^6.0.1",
+    "uglifyify": "^5.0.2",
+    "web-auto-extractor": "^1.0.16"
+  }
+}

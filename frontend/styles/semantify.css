@@ -1,0 +1,164 @@
+.modal-header {
+    height: 70px;
+    /*font-size: 50px !important;*/
+    background-color: #B0191E !important;
+    color: white;
+}
+
+/* The Close Button */
+.modal-header .close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.modal-header .close:hover,
+.modal-header .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-body {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+.modal-footer {
+    height: 65px;
+}
+
+.sti-red {
+    background-color: #B0191E !important;
+}
+
+.button-sti-red {
+    background-color: #b0191e !important;
+    color: white !important;
+}
+
+.button-sti-red-action {
+    background-color: #650003 !important;
+    color: white !important;
+}
+
+.button-sti-red-action:hover {
+    background-color: #b0191e !important;
+}
+
+.sti-grey {
+    background-color: rgb(220, 220, 220) !important;
+}
+
+.button-sti-orange {
+    background-color: #b04200 !important;
+    color: white !important;
+}
+
+.button-sti-green {
+    background-color: #2a8832 !important;
+}
+
+.text-white {
+    color: white;
+}
+
+.panel-heading.sti-red {
+    color: white !important;
+}
+
+.header-button {
+    margin: 10px 5px !important;
+    padding: 10px !important;
+    border-radius: 3px;
+    background-color: rgba(212, 63, 47, 0.53);
+    line-height: 20px;
+    position: relative;
+    display: block;
+}
+
+.header-button:hover, .header-button:focus {
+    background-color: rgba(212, 63, 47, 0.76) !important;
+}
+
+.header-dropdown > li > a {
+    padding: 3px 20px !important;
+    font-size: 14px !important;
+}
+
+.header-dropdown > li > a:hover, .header-dropdown > li > a:focus {
+    background-color: rgba(2, 2, 2, 0.0) !important;
+}
+
+i.iconSmall {
+    font-size: 16px;
+    padding-left: 4px;
+}
+
+.btn-midSize {
+    height: 30px !important;
+    width: 30px !important;
+    min-width: 30px !important;
+}
+
+.btn-smallSize {
+    height: 18px !important;
+    width: 18px !important;
+    min-width: 18px !important;
+}
+
+.btn-smallSize > i {
+    font-size: 18px !important;
+    transform: translate(-9px, -9px) !important;
+}
+
+.fab-btn-header {
+    background-color: #650003 !important;
+    color: white !important;
+}
+
+.fab-btn-header:hover {
+    background-color: rgba(212, 63, 47, 0.76) !important;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+label.myLabel {
+    color: #868686 !important;
+}
+
+pre {
+    margin: 5px;
+}
+
+.string {
+    color: #000514;
+}
+
+.number {
+    color: #ba6702;
+}
+
+.boolean {
+    color: blue;
+}
+
+.null {
+    color: magenta;
+}
+
+.key {
+    color: #d70000;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.input-myBackground {
+    background-color: rgba(175, 172, 172, 0.1) !important;
+    padding: 7px !important;
+}
