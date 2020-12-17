@@ -33,14 +33,15 @@ async function initSdoAdapter() {
 /**
  * Checks if a given Annotation is in compliance with the Schema.org vocabulary and its format specifications (JSON, JSON-LD)
  *
- * @param {object | string} annotation - the schema.org annotation to check
+ * @param {object | string} inputAnnotation - the schema.org annotation to check
  * @returns {Promise<GeneralVerificationReport>} the resulting verification report
  */
-async function isAnnotationValid(annotation) {
+async function isAnnotationValid(inputAnnotation) {
+    let annotation;
     let errorReport = [];
     try {
         // 1. Lexical and Syntax analysis of annotation
-        let lexCheck = lexicalCheckJSON(annotation, errorReport);
+        let lexCheck = lexicalCheckJSON(inputAnnotation, errorReport);
         if (lexCheck.outcome === false) {
             return new generalVerificationReport("Invalid", null, null, errorReport);
         } else {
@@ -177,12 +178,13 @@ function semanticCheckJSONLD(annotation, errorReport) {
  */
 function lexicalCheckJSON(annotation, errorReport) {
     let result = {
-        outcome: true, // Returns false if not valid
-        annotation: annotation
+        outcome: true // Returns false if not valid
     };
     try {
-        if (VUT.isString(result.annotation)) {
-            result.annotation = JSON.parse(result.annotation);
+        if (VUT.isString(annotation)) {
+            result.annotation = JSON.parse(annotation);
+        } else {
+            result.annotation = JSON.parse(JSON.stringify(annotation)); // make hard copy to not change the original object
         }
     } catch (e) {
         errorReport.push(new ErrorEntry("JsonError", "Critical", 101, "Invalid JSON", "The input annotation can not be parsed to JSON.", null, null));
