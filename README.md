@@ -53,3 +53,7 @@ You have to load the dev-dependencies if you want to edit and rebuild the extrac
 Web-page scrapping including dynamically generated HTML content is usually done by a crawler/scrapper like https://www.npmjs.com/package/puppeteer
 
 Since that requires its own backend, which we wanted to omit for this showcase project, we decided to use the public API of semantify.it to do this task. Of course you can substitute this with your own HTML fetching module.
+
+## License 
+
+CC-BY-SA-3.0
