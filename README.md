@@ -11,7 +11,7 @@ In your terminal:
 1. `git clone https://github.com/semantifyit/sdo-check.git`
 2. `cd sdo-check`
 3. `npm install --only=prod` or `npm install` if you want to install dev-dependencies too (to edit and build bundles)
-4. `npm start` and your standard browser should open showing sdo-check
+4. `npm start` and your standard browser should open showing sdo-check. If you have 'security' issues try another browser or make a localhost where you serve sdoCheck.html
 
 ## Features 
 
