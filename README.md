@@ -1,6 +1,12 @@
-# sdo-check
+# SDO-Check
 
-This is an open-source version of the SDO-Check tool of semantify.it (http://sdocheck.semantify.it/)
+SDO-Check is a web-tool that enables the fast and simple verification of schema.org annotations. It is the open-source version of the SDO-Check tool of semantify.it (http://sdocheck.semantify.it/). This tool allows the input of a code-snippet or a web-page URL and shows the verification result in form of an interactive tree-visualization with details about all irregularities found.  The verification is based on the latest version of the official schema.org vocabulary, common SEO practices, and recommendations from semantic web experts.
+
+You can find more general informations about the tool at https://semantify.it/sdo-check/
+
+The public repository for this tool is at https://github.com/semantifyit/sdo-check
+
+Any bugs/suggestion can be posted on the issues page at  https://github.com/semantifyit/sdo-check/issues
 
 ## Download and run
 
@@ -13,18 +19,17 @@ In your terminal:
 3. `npm install --only=prod` or `npm install` if you want to install dev-dependencies too (to edit and build bundles)
 4. `npm start` and your standard browser should open showing sdo-check. If you have 'security' issues try another browser or make a localhost where you serve sdoCheck.html
 
-## Features 
-
-todo
-
 ## Verification Algorithm
 
-Find more about how the verification algorithm works in:
+Find more about how the verification algorithm works at:
 
 [Schema.org Verification](./docu/GeneralVerification.md)
 
 [Basic Verification](./docu/BasicVerification.md)
 
+(Todo: Add description about the overall verificaitn strategy and the error reporting system)
+
+(Todo: Update and Add the jest tests for the verification algorithm)
 
 ## Components
 
