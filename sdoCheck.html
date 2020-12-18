@@ -82,14 +82,13 @@
             <div class="bg-icon">
                 <span class="material-icons">code</span>
             </div>
-            <div id="html-src-loading" class="blender" hidden>
+            <div id="html-src-loading" class="blender hidden">
                 <div>
                     <img src="frontend/images/loading.gif">
                 </div>
             </div>
             <textarea id="html-input" placeholder="paste HTML/JSON-LD snippet here or enter ULR above"
-                      hidden></textarea>
-        </div>
+                      class="hidden"></textarea></div>
         <!-- Resizer -->
         <div id="resizer"></div>
         <!-- semantic visualisation -->
@@ -110,7 +109,7 @@
             <div class="bg-icon">
                 <span class="material-icons">account_tree</span>
             </div>
-            <div id="sem-vis-loading" class="blender" hidden>
+            <div id="sem-vis-loading" class="blender hidden">
                 <div>
                     <img src="frontend/images/loading.gif" alt="loading animation">
                 </div>
@@ -168,7 +167,7 @@
                 <div>
                     <a onclick="toggleExplain(this)" class="show-more-link">> show more</a>
                 </div>
-                <div class="my-alert__error-explain hidden">
+                <div class="my-alert__error-explain hiddenExplanation">
                     {{errorExplain}}
                 </div>
             </div>

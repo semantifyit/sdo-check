@@ -1,3 +1,10 @@
+body {
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    font-weight: 300 !important;
+}
+
 .os-color-bg {
     background: #8c2720 !important;
 }
@@ -721,7 +728,16 @@ a.jstree-clicked > p.jstree-entry-error, a.jstree-clicked > p.jstree-entry-warni
 }
 
 .hidden {
+    display: none;
+}
+
+.hiddenExplanation {
     visibility: hidden;
+    display: none;
+}
+
+b, strong {
+    font-weight: 700 !important;
 }
 
 #table-checkoutFlow-basic {

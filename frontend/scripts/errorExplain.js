@@ -6,10 +6,10 @@
 function toggleExplain(el) {
     let errorExplainDiv = $($(el).closest('.alert').find('.my-alert__error-explain'));
     if (errorExplainDiv.css("visibility") === "hidden") {
-        errorExplainDiv.removeClass("hidden");
+        errorExplainDiv.removeClass("hiddenExplanation");
         $(el).text("< show less");
     } else {
-        errorExplainDiv.addClass("hidden");
+        errorExplainDiv.addClass("hiddenExplanation");
         $(el).text("> show more");
     }
 }

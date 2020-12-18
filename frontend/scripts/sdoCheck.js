@@ -290,7 +290,7 @@ function createHTMLForVerificationResult(verificationReport) {
     let amountWarnings = 0;
     let amountErrors = 0;
     let amountCriticals = 0;
-    switch (verificationReport.validationResult) {
+    switch (verificationReport.verificationResult) {
         case "Valid":
             errorHtml = iconCheck;
             titleText = "This annotation is correct";
