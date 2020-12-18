@@ -20,7 +20,10 @@
     "validation",
     "verification"
   ],
-  "author": "Omar J. Holzknecht",
+  "author": {
+    "name": "Omar J. A. Holzknecht for STI Innsbruck",
+    "url": "https://semantify.it"
+  },
   "license": "CC-BY-SA-3.0",
   "bugs": {
     "url": "https://github.com/semantifyit/sdo-check/issues"
