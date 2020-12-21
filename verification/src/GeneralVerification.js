@@ -861,7 +861,7 @@ function checkIfValueIsActionSDOProperty(value) {
  * @returns boolean - returns true if the given URI complies
  */
 function checkRecommendedSDOContextURI(URI) {
-    return /^https?:\/\/schema.org\/?$/.test(URI);
+    return /^https?:\/\/schema\.org\/?$/.test(URI);
 }
 
 /**
@@ -871,7 +871,7 @@ function checkRecommendedSDOContextURI(URI) {
  * @returns boolean - returns true if the given URI complies
  */
 function checkAllowedSDOContextURI(URI) {
-    return /^(https?:\/\/)?(www.)?schema.org\/?$/.test(URI);
+    return /^(https?:\/\/)?(www\.)?schema\.org\/?$/.test(URI);
 }
 
 /**
