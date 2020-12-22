@@ -479,12 +479,11 @@ function annotationReverseHandling(annotationObject, errorReport, path) {
 function annotationPropertyCheck(annotationObject, actualProperty, errorReport, path) {
     let prop = actualProperty;
     if (checkIfValueIsActionSDOProperty(prop)) {
-        // The property is from the action expansion, value should be a string
-        // Todo check if type is an action
-        // Todo https://schema.org/docs/actions.html
-        if (!VUT.isString(annotationObject[prop])) {
-            // 304 bad action property
-            errorReport.push(createError_304("The annotation has an action property ('" + VUT.prettyPrintURIMTEs(prop) + "') with a value that is not a string.", path + "." + prop));
+        // The property is from the action expansion, value should be a string or a PropertyValueSpecification -> https://schema.org/docs/actions.html
+        // Todo add syntactic sugar for -input and -output properties if their value is a string
+        if (!VUT.isString(annotationObject[prop]) && !(VUT.isObject(annotationObject[prop]) && annotationObject[prop]["@type"].includes("PropertyValueSpecification"))) {
+            // 304 Non-conform action property
+            errorReport.push(createError_304("The annotation has an action property ('" + VUT.prettyPrintURIMTEs(prop) + "') with a value that is not a string or a PropertyValueSpecification.", path, prop));
         }
     } else {
         // 303 non-conform property
@@ -1090,7 +1089,7 @@ function createError_304(description, annotationPath, value = null) {
         "AnnotationError",
         "Error",
         304,
-        "Misused Action",
+        "Non-conform action property",
         description,
         null,
         annotationPath,

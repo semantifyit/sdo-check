@@ -52,6 +52,8 @@ function createExplainHTML(errorEntry) {
             return createExplainHTML_302(errorEntry);
         case 303:
             return createExplainHTML_303(errorEntry);
+        case 304:
+            return createExplainHTML_304(errorEntry);
         case 305:
             return createExplainHTML_305(errorEntry);
         case 306:
@@ -279,12 +281,12 @@ function createExplainHTML_302(errorEntry) {
             similarityThreshold++;
         } while (similarMatches.length < 2);
 
-        similarMatches.sort(function(a, b) {
+        similarMatches.sort(function (a, b) {
             if (a.iri < b.iri)
                 return -1;
             return 1;
         });
-        similarMatches.sort(function(a, b) {
+        similarMatches.sort(function (a, b) {
             if (a.distance < b.distance)
                 return -1;
             return 1;
@@ -335,12 +337,12 @@ function createExplainHTML_303(errorEntry) {
             similarityThreshold++;
         } while (similarMatches.length < 2);
 
-        similarMatches.sort(function(a, b) {
+        similarMatches.sort(function (a, b) {
             if (a.iri < b.iri)
                 return -1;
             return 1;
         });
-        similarMatches.sort(function(a, b) {
+        similarMatches.sort(function (a, b) {
             if (a.distance < b.distance)
                 return -1;
             return 1;
@@ -362,6 +364,42 @@ function createExplainHTML_303(errorEntry) {
     }
     let htmlExplanation = createHTMLForExplanation("The property " + valueHtml + "used in the annotation is <b>not</b> a valid schema.org property. Make sure it is spelled correctly (uppercase/lowercase, no blank spaces, etc.).");
     return htmlExplanation + htmlDataContext + htmlExample;
+}
+
+// 304 Non-conform action property
+function createExplainHTML_304(errorEntry) {
+    let valueHtml = "";
+    let htmlExample = "";
+    if (errorEntry.value) {
+        valueHtml = "<b>" + prettyPrintURI(errorEntry.value) + "</b>";
+        let match;
+        if (errorEntry.value.endsWith("-input")) {
+            match = errorEntry.value.substring(0, errorEntry.value.length - 6);
+            console.log(errorEntry.value + " _ " + match);
+        } else if (errorEntry.value.endsWith("-output")) {
+            match = errorEntry.value.substring(0, errorEntry.value.length - 7);
+            console.log(errorEntry.value + " _ " + match);
+        }
+        let exampleAnnotation =
+            {
+                "@context": "http://schema.org",
+                "@type": "WebSite",
+                "name": "Example.com",
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "http://example.com/search?q={q}"
+                }
+            };
+        exampleAnnotation.potentialAction[highlightExampleValue("query-input")] = {};
+        exampleAnnotation.potentialAction[highlightExampleValue("query-input")][highlightExampleValue("@type")] = highlightExampleValue("PropertyValueSpecification");
+        exampleAnnotation.potentialAction[highlightExampleValue("query-input")].valueRequired = true;
+        exampleAnnotation.potentialAction[highlightExampleValue("query-input")].valueMaxlength = 80;
+        exampleAnnotation.potentialAction[highlightExampleValue("query-input")].valueName = "q";
+        htmlExample = createHTMLForExample(exampleAnnotation);
+
+    }
+    let htmlExplanation = createHTMLForExplanation("The property " + valueHtml + " used in the annotation is a schema.org action-property. The value of that property must be either a string in a specific format or a PropertyValueSpecification. See detailed information at <a target='_blank' href='https://schema.org/docs/actions.html'>https://schema.org/docs/actions.html</a>.");
+    return htmlExplanation + htmlExample;
 }
 
 // 305 Non-conform domain

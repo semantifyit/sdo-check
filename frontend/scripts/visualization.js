@@ -226,7 +226,7 @@ function findRelatedErrors(annotationPath, value, keyPath, valuePath, errors) {
     let foundErrors = [];
     // We could also use the error.name for distinction (important for general errors like 300)
     const rootErrorCodes = [100, 101, 102, 103, 104, 201, 202, 203, 205, 206, 300, 301, 999]; // Those global errors that are shown at the root
-    const keyBasedErrorCodes = [303, 305];
+    const keyBasedErrorCodes = [303, 304, 305];
     const valueBasedErrorCodes = [207, 300];
     const typeBasedErrorCodes = [309, 200]; // Errors are shown at the @type key of the entity
     const idBasedErrorCodes = [300]; // Errors are shown at the @type key of the entity
