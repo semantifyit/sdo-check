@@ -15,11 +15,7 @@ In your terminal:
 
 ## Documentation / Wiki
 
-To download the Wiki of this repository as a submodule:
-
-5. `git submodule add https://github.com/semantifyit/sdo-check.wiki.git` in your local sdo-check directory
-
-You can also view the Wiki online at https://github.com/semantifyit/sdo-check/wiki
+You can download the Wiki as repository or view it online at https://github.com/semantifyit/sdo-check/wiki
 
 ## Further Links
 
