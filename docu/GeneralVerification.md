@@ -8,9 +8,9 @@ The general verification of schema.org annotations is defined as the process of 
 * JSON-LD
 * Schema.org
 
-Additionally, restrictions are added/softened depending on real-world practices and usages (e.g. [schema.org's pragmatic view on conformance](https://schema.org/docs/datamodel.html#conformance), [Google's structured data testing tool](https://search.google.com/structured-data/testing-tool))
+Additionally, restrictions are added/softened depending on real-world practices and usages (e.g. [schema.org's pragmatic view on conformance](https://schema.org/docs/datamodel.html#conformance))
 
-The output of the verification process is provided as an error report in a structured way (JSON-LD) with a specific data model (GeneralValidationReport). Any abnormalities are expressed through corresponding error entries. The documentation file "BasicValidation.md" provides the error list for JSON and JSON-LD specific errors. In the following the error list for schema.org is provided.
+The output of the verification process is provided as an error report in a structured way (JSON-LD) with a specific data model (GeneralVerificationReport). Any inconsistencies found are expressed through corresponding error entries. The documentation file "BasicVerification.md" provides the error list for JSON and JSON-LD specific errors. In the following the error list for schema.org is provided.
 
 ## Error List for General Verification of schema.org annotations
 
@@ -18,15 +18,15 @@ Error Codes for the General Verification of schema.org annotations start with 3
 
 | ErrorCode | Name | Severity | Description |
 | :---: | :---: | :---: | :--- |
-| 300 | Generic schema.org Verification error | Any |Can be used as super-type for any error regarding the general validation |
-| 301 | Non-conform @context | Error | Used @context must use/include schema.org
+| 300 | Generic schema.org Verification error | Any | Can be used as generic error code regarding the general verification, e.g. if there is no other suitable error code |
+| 301 | Non-conform @context | Error | There is an error with the (not) used @context
 | 302 | Non-conform @type | Error | Used @type is non-conform to schema.org
 | 303 | Non-conform property | Error | Used property is non-conform to schema.org
-| 304 | Wrongly formatted action property | Error | Used action property (input-/output-) has a value that is not a string
+| 304 | Non-conform action property | Error | Used action property (input-/output-) is non-conform to schema.org
 | 305 | Non-conform domain | Error | Used property has a domain that is not allowed to use according to schema.org 
 | 306 | Non-conform range | Error | Used property has a range that is not allowed to use according to schema.org 
-| 307 | Unexpected string | Error | Used property has a string as value, although it is not explicitly allowed by to schema.org 
-| 308 | Wrongly formatted enumeration | Warning | Used property has an enumeration value that is non-conform to schema.org (must be a URL stated as enumeration value)
+| 307 | Unexpected string | Warning | Used property has a string as value, although it is not explicitly allowed by to schema.org 
+| 308 | Non-conform enumeration | Warning | Used property has an enumeration value that is non-conform to schema.org (must be a URL stated as enumeration value)
 | 309 | Empty entity | Warning | Used property has a range that is an entity with no properties
 
 ## Misc
