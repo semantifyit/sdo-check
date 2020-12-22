@@ -1,0 +1,3 @@
+[submodule "sdo-check.wiki"]
+	path = sdo-check.wiki
+	url = https://github.com/semantifyit/sdo-check.wiki.git
