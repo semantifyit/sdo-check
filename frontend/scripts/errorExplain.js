@@ -387,18 +387,25 @@ function createExplainHTML_304(errorEntry) {
                 "name": "Example.com",
                 "potentialAction": {
                     "@type": "SearchAction",
-                    "target": "http://example.com/search?q={q}"
+                    "target": {
+                        "@type": "EntryPoint",
+                        "urlTemplate": "http://example.com/search?q={q}",
+                        "encodingType": "application/ld+json",
+                        "contentType": "application/ld+json"
+                    },
                 }
             };
-        exampleAnnotation.potentialAction[highlightExampleValue("query-input")] = {};
-        exampleAnnotation.potentialAction[highlightExampleValue("query-input")][highlightExampleValue("@type")] = highlightExampleValue("PropertyValueSpecification");
-        exampleAnnotation.potentialAction[highlightExampleValue("query-input")].valueRequired = true;
-        exampleAnnotation.potentialAction[highlightExampleValue("query-input")].valueMaxlength = 80;
-        exampleAnnotation.potentialAction[highlightExampleValue("query-input")].valueName = "q";
+        exampleAnnotation.potentialAction[highlightExampleValue("query-input")] = [];
+        exampleAnnotation.potentialAction[highlightExampleValue("query-input")][0] = {};
+        exampleAnnotation.potentialAction[highlightExampleValue("query-input")][0][highlightExampleValue("@type")] = highlightExampleValue("PropertyValueSpecification");
+        exampleAnnotation.potentialAction[highlightExampleValue("query-input")][0].valueRequired = true;
+        exampleAnnotation.potentialAction[highlightExampleValue("query-input")][0].valueMaxLength = 80;
+        exampleAnnotation.potentialAction[highlightExampleValue("query-input")][0].valueName = "q";
+        exampleAnnotation.potentialAction[highlightExampleValue("query-input")][1] = highlightExampleValue("required maxlength=80 name=q");
         htmlExample = createHTMLForExample(exampleAnnotation);
 
     }
-    let htmlExplanation = createHTMLForExplanation("The property " + valueHtml + " used in the annotation is a schema.org action-property. The value of that property must be either a string in a specific format or a PropertyValueSpecification. See detailed information at <a target='_blank' href='https://schema.org/docs/actions.html'>https://schema.org/docs/actions.html</a>.");
+    let htmlExplanation = createHTMLForExplanation("The property " + valueHtml + " used in the annotation is a schema.org action-property. The value of that property must be either a string in a <b>specific format</b> or a <b>PropertyValueSpecification</b>. See detailed information at <a target='_blank' href='https://schema.org/docs/actions.html'>https://schema.org/docs/actions.html</a>.");
     return htmlExplanation + htmlExample;
 }
 

@@ -478,12 +478,11 @@ function annotationReverseHandling(annotationObject, errorReport, path) {
  */
 function annotationPropertyCheck(annotationObject, actualProperty, errorReport, path) {
     let prop = actualProperty;
-    if (checkIfValueIsActionSDOProperty(prop)) {
+    if (checkIfActionProperty(prop)) {
         // The property is from the action expansion, value should be a string or a PropertyValueSpecification -> https://schema.org/docs/actions.html
-        // Todo add syntactic sugar for -input and -output properties if their value is a string
-        if (!VUT.isString(annotationObject[prop]) && !(VUT.isObject(annotationObject[prop]) && annotationObject[prop]["@type"].includes("PropertyValueSpecification"))) {
+        if (!checkIfValidActionPropertyRange(annotationObject[prop])) {
             // 304 Non-conform action property
-            errorReport.push(createError_304("The annotation has an action property ('" + VUT.prettyPrintURIMTEs(prop) + "') with a value that is not a string or a PropertyValueSpecification.", path, prop));
+            errorReport.push(createError_304("The annotation has an action property ('" + VUT.prettyPrintURIMTEs(prop) + "') with a value that is not a well-formatted string or a PropertyValueSpecification.", path, prop));
         }
     } else {
         // 303 non-conform property
@@ -839,16 +838,27 @@ function checkIfValueIsWrongSpelledSDOProperty(value) {
     }
 }
 
-function checkIfValueIsActionSDOProperty(value) {
-    if (value.endsWith("-input")) {
-        if ((sdoAdapterGenVer.getListOfProperties().includes(value.substring(0, value.length - ("-input").length)))) {
+// Tests if the given property entry is a valid action-property as defined in https://schema.org/docs/actions.html
+function checkIfActionProperty(property) {
+    if (property.endsWith("-input")) {
+        if ((sdoAdapterGenVer.getListOfProperties().includes(property.substring(0, property.length - ("-input").length)))) {
             return true;
         }
     }
-    if (value.endsWith("-output")) {
-        if ((sdoAdapterGenVer.getListOfProperties().includes(value.substring(0, value.length - ("-output").length)))) {
+    if (property.endsWith("-output")) {
+        if ((sdoAdapterGenVer.getListOfProperties().includes(property.substring(0, property.length - ("-output").length)))) {
             return true;
         }
+    }
+    return false;
+}
+
+// Tests if the given value entry is valid for an action-property as defined in https://schema.org/docs/actions.html
+function checkIfValidActionPropertyRange(value) {
+    if (VUT.isString(value)) {
+        return /^\s*([a-z]+=([a-z]?[0-9]?[A-Z]?)+\s)*(required\s*)+(\s*[a-z]+=([a-z]?[0-9]?[A-Z]?)+)*$/.test(value);
+    } else if (VUT.isObject(value) && value["@type"].includes("PropertyValueSpecification")) {
+        return true;
     }
     return false;
 }
