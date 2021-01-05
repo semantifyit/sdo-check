@@ -49,8 +49,6 @@ async function isAnnotationValid(inputAnnotation) {
             // If there is no context we stop the verification process here
             return createGeneralVerificationReport("Invalid", "There was a problem with the @context of the annotation.", errorReport);
         }
-        // 2.5 check null values (undefined, double nested arrays, null, invalid type definitions) {
-        recursive_checkAnomalies(annotation, errorReport);
         // 3. Pre-process annotation, so it has a fixed structure we can work on (JSON-LD transformation)
         annotation = await preProcessAnnotation(annotation);
         // 4. Semantic analysis of annotation
@@ -77,6 +75,8 @@ async function isAnnotationValid(inputAnnotation) {
         console.log(e);
         if (e.name === "jsonld.InvalidUrl") {
             errorReport.push(createError_999(e.details.code + ": " + e.details.url + " - " + e.message));
+        } else if (e.name === "jsonld.SyntaxError" && e.message === "Invalid JSON-LD syntax; \"@type\" value must a string, an array of strings, an empty object, or a default object.") {
+            errorReport.push(createError_204(null, e.details.value));
         } else {
             errorReport.push(createError_999("There was an error during the verification process, make sure the sent annotation has a valid serialization."));
         }
@@ -94,10 +94,19 @@ function lexicalCheckJSON(annotation, errorReport) {
     let result = {
         outcome: true // Returns false if not valid
     };
+    if (annotation === undefined || annotation === null) {
+        errorReport.push(createError_102());
+        result.outcome = false;
+        return result;
+    }
     try {
         if (VUT.isString(annotation)) {
             result.annotation = JSON.parse(annotation);
+            // Check null values (undefined, double nested arrays, null, invalid type definitions) {
+            recursive_checkAnomalies(result.annotation, errorReport);
         } else {
+            // Check null values (undefined, double nested arrays, null, invalid type definitions) {
+            recursive_checkAnomalies(annotation, errorReport); // Must be done before JSON.stringify, else the undefined values would be lost
             result.annotation = JSON.parse(JSON.stringify(annotation)); // Make hard copy to not change the original object
         }
     } catch (e) {
@@ -252,13 +261,17 @@ async function preProcessAnnotation(annotation) {
     let globalStandardContext = {
         'schema': sdoURI
     };
-    annotation = recursive_contextReplacement(annotation, globalStandardContext);
+    annotation = recursive_compactPreReplacement(annotation, globalStandardContext);
     // https://www.w3.org/TR/json-ld-api/#context-processing-algorithm
     annotation = await jsonld.compact(annotation, globalStandardContext);
+    annotation = recursive_compactPostReplacement(annotation);
     return annotation;
 }
 
-function recursive_contextReplacement(annotationObject, globalStandardContext) {
+function recursive_compactPreReplacement(annotationObject, globalStandardContext) {
+    if (!annotationObject) {
+        return annotationObject;
+    }
     if (VUT.isObject(annotationObject["@context"])) {
         let vocabKeys = Object.keys(annotationObject["@context"]);
         for (let i = 0; i < vocabKeys.length; i++) {
@@ -278,11 +291,42 @@ function recursive_contextReplacement(annotationObject, globalStandardContext) {
         if (!properties[i].startsWith("@")) {
             if (Array.isArray(annotationObject[properties[i]])) {
                 for (let j = 0; j < annotationObject[properties[i]].length; j++) {
-                    annotationObject[properties[i]][j] = recursive_contextReplacement(annotationObject[properties[i]][j], globalStandardContext);
+                    annotationObject[properties[i]][j] = recursive_compactPreReplacement(annotationObject[properties[i]][j], globalStandardContext);
                 }
             } else if (VUT.isObject(annotationObject[properties[i]])) {
-                annotationObject[properties[i]] = recursive_contextReplacement(annotationObject[properties[i]], globalStandardContext);
+                annotationObject[properties[i]] = recursive_compactPreReplacement(annotationObject[properties[i]], globalStandardContext);
             }
+        }
+        // We have to encode whitespaces in property URIs, else the JSON-LD processor will automatically ignore them
+        if (properties[i].includes(" ")) {
+            let newPropertyKey = properties[i].replaceAll(" ", "%20");
+            annotationObject[newPropertyKey] = JSON.parse(JSON.stringify(annotationObject[properties[i]]));
+            delete annotationObject[properties[i]];
+        }
+    }
+    return annotationObject;
+}
+
+function recursive_compactPostReplacement(annotationObject) {
+    if (!annotationObject) {
+        return annotationObject;
+    }
+    let properties = Object.keys(annotationObject);
+    for (let i = 0; i < properties.length; i++) {
+        if (!properties[i].startsWith("@")) {
+            if (Array.isArray(annotationObject[properties[i]])) {
+                for (let j = 0; j < annotationObject[properties[i]].length; j++) {
+                    annotationObject[properties[i]][j] = recursive_compactPostReplacement(annotationObject[properties[i]][j]);
+                }
+            } else if (VUT.isObject(annotationObject[properties[i]])) {
+                annotationObject[properties[i]] = recursive_compactPostReplacement(annotationObject[properties[i]]);
+            }
+        }
+        // Encode whitespaces back (so they can be detected correctly by the verification algorithm)
+        if (properties[i].includes("%20")) {
+            let newPropertyKey = properties[i].replaceAll("%20", " ");
+            annotationObject[newPropertyKey] = JSON.parse(JSON.stringify(annotationObject[properties[i]]));
+            delete annotationObject[properties[i]];
         }
     }
     return annotationObject;
@@ -324,13 +368,13 @@ function recursive_semantic_isAnnotationValid(annotationObject, errorReport, pat
                 for (let i = 0; i < annotationObject["@type"].length; i++) {
                     if (VUT.isString(annotationObject["@type"][i]) === false) {
                         // 204 bad type
-                        errorReport.push(createError_204(path + ".@type/" + i));
+                        errorReport.push(createError_204(path + ".@type/" + i, annotationObject["@type"][i]));
                         break;
                     }
                 }
             } else {
                 // 204 bad type
-                errorReport.push(createError_204(path + ".@type/0"));
+                errorReport.push(createError_204(path + ".@type/0", annotationObject["@type"]));
             }
         }
     }
@@ -992,7 +1036,7 @@ function createError_203(description, path) {
 }
 
 // Creates an Error for Bad @type
-function createError_204(path) {
+function createError_204(path = null, value = null) {
     return new ErrorEntry(
         "JsonLdError",
         "Error",
@@ -1000,7 +1044,8 @@ function createError_204(path) {
         "Bad @type",
         "The annotation has an entity with an invalid @type entry.",
         null,
-        path
+        path,
+        value
     );
 }
 
