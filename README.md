@@ -4,18 +4,24 @@ SDO-Check is a web-tool that enables the fast and simple verification of schema.
 
 ## Download and run
 
-To download and run this project you need GIT and NodeJS.
+To download and run this project you need [Git](https://git-scm.com/) and [NodeJS](https://nodejs.org/en/).
 
 In your terminal:
 
 1. `git clone https://github.com/semantifyit/sdo-check.git`
 2. `cd sdo-check`
-3. `npm install --only=prod` or `npm install` if you want to install dev-dependencies too (to edit and build bundles)
-4. `npm start` and your standard browser should open showing sdo-check. If you have 'security' issues try another browser or make a localhost where you serve sdoCheck.html
+3. `npm install --only=prod` or `npm install` if you want to install dev-dependencies too (to edit and build bundles, to run tests)
+4. `npm start` and your standard browser should open showing sdo-check. If you have 'security' issues try another browser or make a localhost where you serve the file sdoCheck.html
 
-## Documentation / Wiki
+## Documentation
 
-You can download the Wiki as repository or view it online at https://github.com/semantifyit/sdo-check/wiki
+You can read/download the documentation of this repository at https://github.com/semantifyit/sdo-check/wiki
+
+## Tests
+
+In order to run tests you must have the dev-dependencies installed.
+
+Tests are done with [jest](https://www.npmjs.com/package/jest) and can be found in the directory `/tests`. You can run the test-suite with `npm test`.
 
 ## Further Links
 

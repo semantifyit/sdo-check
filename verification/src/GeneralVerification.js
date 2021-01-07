@@ -5,12 +5,21 @@ const VUT = require("./VerificationUtilities");
 const jsonld = require('jsonld');
 const sdoURI = "http://schema.org/";
 
-let sdoAdapterGenVer;
-initSdoAdapter();
+let sdoAdapterGenVer;   // The SDO Adapter used for the general verification
+// initialize the SDO Adapter automatically if it is detected
+if (typeof SDOAdapter !== 'undefined') {
+    initSdoAdapter();
+}
+
 
 // Creates an SDO-Adapter with the latest working vocabulary file for schema.org
-async function initSdoAdapter() {
-    sdoAdapterGenVer = new SDOAdapter();
+async function initSdoAdapter(SDOAdapterLibrary = null) {
+    // This is needed to allow local tests without having to add the SDO Adapter in the bundle
+    if (!SDOAdapterLibrary) {
+        sdoAdapterGenVer = new SDOAdapter();
+    } else {
+        sdoAdapterGenVer = new SDOAdapterLibrary();
+    }
     const urlLatestSDO = await sdoAdapterGenVer.constructSDOVocabularyURL('latest');
     await sdoAdapterGenVer.addVocabularies([urlLatestSDO]);
 }
@@ -77,6 +86,12 @@ async function isAnnotationValid(inputAnnotation) {
             errorReport.push(createError_999(e.details.code + ": " + e.details.url + " - " + e.message));
         } else if (e.name === "jsonld.SyntaxError" && e.message === "Invalid JSON-LD syntax; \"@type\" value must a string, an array of strings, an empty object, or a default object.") {
             errorReport.push(createError_204(null, e.details.value));
+        } else if (e.name === "jsonld.SyntaxError" && e.message === "Invalid JSON-LD syntax; the value of \"@vocab\" in a @context must be a string or null.") {
+            // Error 202 Bad @Context - Already generated during checkContext()
+        } else if (e.name === "jsonld.SyntaxError" && e.message === "Invalid JSON-LD syntax; @context term values must be strings or objects.") {
+            // Error 202 Bad @Context - Already generated during checkContext()
+        } else if (e.name === "jsonld.SyntaxError" && e.message === "Invalid JSON-LD syntax; @context must be an object.") {
+            // Error 202 Bad @Context - Already generated during checkContext()
         } else {
             errorReport.push(createError_999("There was an error during the verification process, make sure the sent annotation has a valid serialization."));
         }
@@ -983,13 +998,13 @@ function createError_103() {
     );
 }
 
-// Creates an Error for the Usage of undefined
+// Creates an Error for the Use of undefined
 function createError_104() {
     return new ErrorEntry(
         "JsonError",
         "Error",
         104,
-        "Usage of undefined",
+        "Use of undefined",
         "The annotation contains an 'undefined' value, which is not conform to the JSON specification.",
         null,
         "$"
@@ -1062,7 +1077,7 @@ function createError_205() {
     );
 }
 
-// Creates an Error for the Usage of null
+// Creates an Error for the Use of null
 function createError_206(errorCausingNull = false) {
     let severity;
     let description;
@@ -1077,7 +1092,7 @@ function createError_206(errorCausingNull = false) {
         "JsonLdError",
         severity,
         206,
-        "Usage of null",
+        "Use of null",
         description,
         null,
         "$"
@@ -1193,5 +1208,6 @@ function createError_999(description) {
 }
 
 module.exports = {
-    isAnnotationValid
+    isAnnotationValid,
+    initSdoAdapter
 };
