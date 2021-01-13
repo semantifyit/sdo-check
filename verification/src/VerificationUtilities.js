@@ -350,7 +350,7 @@ function reversePrettyPrintURI(string) {
 // https://www.w3.org/TR/xmlschema-2/#isoformats
 // Returns the valid time Moment object if accepted, returns false if not valid
 function genTimeObj(val) {
-    // Todo: Exact definition of accepted formats, and library or implementation to verify them
+    // Todo: Exact definition of accepted formats, and library or implementation to verify them - https://github.com/semantifyit/sdo-check/issues/7
     let validFormats = ["HH:mm:ss.SSSZ", "HH:mm:ss.SSS", "HH:mm:ssZ", "HH:mm:ss", "HH:mmZ", "HH:mm"];
     for (let i = 0; i < validFormats.length; i++) {
         let timeObj = moment(val, validFormats[i], true);
@@ -366,7 +366,7 @@ function genTimeObj(val) {
 // ISO_DIS%208601-1.pdf (ISO8601 from 2016)
 // Returns the valid date Moment object if accepted, returns false if not valid
 function genDateTimeObj(val) {
-    // Todo: Exact definition of accepted formats, and library or implementation to verify them
+    // Todo: Exact definition of accepted formats, and library or implementation to verify them - https://github.com/semantifyit/sdo-check/issues/7
     let validFormats = ["YYYY-MM-DDTHH:mm:ss.SZ", "YYYY-MM-DDTHH:mm:ssZ", "YYYY-MM-DDTHH:mm:ss", "YYYY-MM-DDTHH:mm:ss.S", "YYYY-MM-DDTHH:mmZ", "YYYY-MM-DDTHH:mm"];
     validFormats.push(...["-YYYY-MM-DDTHH:mm:ss.SZ", "-YYYY-MM-DDTHH:mm:ssZ", "-YYYY-MM-DDTHH:mm:ss", "-YYYY-MM-DDTHH:mm:ss.S", "-YYYY-MM-DDTHH:mmZ", "-YYYY-MM-DDTHH:mm"]);
     for (let i = 0; i < validFormats.length; i++) {
@@ -383,7 +383,7 @@ function genDateTimeObj(val) {
 // ISO_DIS%208601-1.pdf (ISO8601 from 2016)
 // Returns the valid date Moment object if accepted, returns false if not valid
 function genDateObj(val) {
-    // Todo: Exact definition of accepted formats, and library or implementation to verify them
+    // Todo: Exact definition of accepted formats, and library or implementation to verify them - https://github.com/semantifyit/sdo-check/issues/7
     let validFormats = [];
     // Calender Dates - Complete representations
     validFormats.push(...["YYYY-MM-DD", "YYYYMMDD"]);

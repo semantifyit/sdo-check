@@ -171,7 +171,7 @@ async function startVerificationOfURL() {
     closeErrorBoard();
     let userInput = SDOC.$urlRowInput.val();
     history.pushState(null, null, window.location.origin + window.location.pathname + "?url=" + userInput); // Update URL as parameter in the address bar
-    // TODO note:
+    // note:
     // We use the public API of semantify.it to retrieve the dynamic HTML of a web page.
     // You can substitute this with your own HTML fetching module (semantify.it uses https://www.npmjs.com/package/puppeteer )
     let res =  await $.ajax({

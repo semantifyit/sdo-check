@@ -154,7 +154,7 @@ function checkContext(annotation, errorReport) {
     // "@context" : {"@vocab": "http://schema.org/"} (Object for schema.org)
     // "@context" : {"@vocab": "http://schema.org/", "XYZ": "http://additinalVocab.any"} (Object for schema.org and additional vocabularies)
     // There are countless other valid @context variations, but we focus/allow only these for our tool
-    // Todo have a closer discussion about which context forms we allow, why and why not
+    // Todo have a closer discussion about which context forms we allow, why and why not - https://github.com/semantifyit/sdo-check/issues/1
     // Check if root Object of annotation has (valid) "@context"
     if (annotation["@context"] === undefined) {
         // 201 no context - we expect a context for this tool
@@ -272,7 +272,7 @@ async function preProcessAnnotation(annotation) {
     // Set @context URI of schema.org to wished value, so that the standard context used for the JSONLD function does not "break" the annotation
     // By using "@vocab": "http://schema.org/" for the input and "schema": "http://schema.org/" for the output we avoid loading the schema.org context
     // (This is wished in order to avoid issues that could arise from loading and converting based on the context file)
-    // Todo But we should look into loading the context and try to catch all resulting unexpected transformations
+    // Todo But we should look into loading the context and try to catch all resulting unexpected transformations - https://github.com/semantifyit/sdo-check/issues/1
     let globalStandardContext = {
         'schema': sdoURI
     };
@@ -511,7 +511,7 @@ function annotationTypeCheck(annotationObject, errorReport, path) {
  * @param path {string} - the actual path of the annotation
  */
 function annotationReverseHandling(annotationObject, errorReport, path) {
-    // Todo this is not correct, because of the recursive nature of the algorithm we need a new solution for this or we get rid of the @reverse during preprocessing
+    // Todo this is not correct, because of the recursive nature of the algorithm we need a new solution for this or we get rid of the @reverse during preprocessing - https://github.com/semantifyit/sdo-check/issues/6
     // Check keys if object do recursion
     if (Array.isArray(annotationObject["@reverse"])) {
         // Is an array of things, which may contain objects, strings, numbers, booleans
@@ -714,7 +714,7 @@ function annotationRangeCheck(annotationObject, actualProperty, errorReport, pat
                 }
                 break;
             case "object":
-                // Todo enable "valued datatypes" from jsonld here
+                // Todo enable "valued datatypes" from jsonld here - https://github.com/semantifyit/sdo-check/issues/4
                 if (rangesToCheck[p]["@type"] !== undefined) {
                     // Check if type used is a subclass of allowed classes
                     if (rec_checkIfTypeIsInRangeOfProperty(rangesToCheck[p]["@type"], valueTypesOfProperty) === true) {
