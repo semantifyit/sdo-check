@@ -49,5 +49,9 @@
     "moment": "^2.29.1",
     "uglifyify": "^5.0.2",
     "web-auto-extractor": "^1.0.16"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testTimeout": 30000
   }
 }
